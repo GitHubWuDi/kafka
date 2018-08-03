@@ -1,0 +1,18 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.118.81:9092,192.168.119.103:9092,192.168.118.213:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: test-consumer-group
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer           
+      bootstrap-servers: 192.168.118.81:9092,192.168.119.103:9092,192.168.118.213:9092
+    listener:
+      concurrency: 3
+    producer:
+      batch-size: 1000
+    template:
+      default-topic: kafkatest
+kafka.stream.servers: 192.168.118.81:9092,192.168.119.103:9092
+kafka.stream.application_id_config: kafka-test-1
