@@ -14,5 +14,6 @@ spring:
       batch-size: 1000
     template:
       default-topic: kafkatest
-kafka.stream.servers: 192.168.118.81:9092,192.168.119.103:9092
-kafka.stream.application_id_config: kafka-test-1
+kafka.zookeeper.connection: 192.168.118.81:2181,192.168.119.103:2181,192.168.118.213:2181
+kafka.zookeeper.session_timeout: 30000
+kafka.zookeeper.connect_timeout: 30000

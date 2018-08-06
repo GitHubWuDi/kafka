@@ -7,16 +7,10 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 
 
 public class KafkaStreamConfiguration {
 
-	@Value("${kafka.stream.servers}")
-	private String servers;
-	@Value("${kafka.stream.application_id_config}")
-	private String application_id_config;
 	
 	public static Properties kafkaStreamConfigMap(){
 		Properties props = new Properties();
