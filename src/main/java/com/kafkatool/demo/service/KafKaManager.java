@@ -39,11 +39,41 @@ public interface KafKaManager {
 	 */
 	public Map<String, Object> queryTopic(String topicName);
 	
-	
 	/**
-	 * 
+	 * 修改kafka的配置
 	 * @param topic
 	 * @param properties
 	 */
 	public void modifyTopicConfig(String topic,Properties properties);
+	
+	/**
+	 * 修改主题分区数(采用默认分区方案，指定分区的总数)
+	 * 示例:某主题当前已有一个分区，若希望再为该主题增加两个分区，该参数为3
+	 * @param topicName
+	 * @param partition
+	 */
+	public void modifyTopicPartitions(String topicName,int partition);
+	
+	/**
+	 * 修改主题分区数(指定分区方案，指定分区的总数)
+	 * 示例:某主题当前已有一个分区，若希望再为该主题增加两个分区，该参数为3
+	 * @param topicName
+	 * @param partition
+	 * @param replicaAssignmentStr
+	 */
+	public void modifyTopicPartitions(String topicName,int partition,String replicaAssignmentStr);
+	
+	/**
+	 * 分区及副本重配置
+	 * @param replication
+	 */
+	public void modifyTopicPartitionsAndReplication(String topicName,int partition,int replication);
+	
+	/**
+	 * 删除topic
+	 * @param topicName
+	 */
+    public void deleteTopic(String topicName);	
+    
+   
 }

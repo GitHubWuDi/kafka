@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.google.gson.Gson;
-import com.kafkatool.demo.service.KafkaSenderService;
+import com.kafkatool.demo.service.test.KafkaSenderService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
