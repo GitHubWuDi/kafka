@@ -9,10 +9,9 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer           
       bootstrap-servers: 192.168.118.81:9092,192.168.119.103:9092,192.168.118.213:9092
       auto-commit-interval: 1000
+      max-poll-records: 50     
     producer:
       bootstrap-servers: 192.168.118.81:9092,192.168.119.103:9092,192.168.118.213:9092
-#      key-serializer: org.apache.kafka.common.serialization.Serializer
-#      value-serializer: org.apache.kafka.common.serialization.Serializer
     listener:
       concurrency: 3
     template:
@@ -22,3 +21,13 @@ kafka.zookeeper.session_timeout: 30000
 kafka.zookeeper.connect_timeout: 30000
 kafka.producer.thread_num: 10
 kafka.consumer.poll: 1000
+#批量消费者配置
+kafka.consumer.servers: 192.168.118.81:9092,192.168.119.103:9092,192.168.118.213:9092
+kafka.consumer.enable.auto.commit: false
+kafka.consumer.session.timeout: 15000
+kafka.consumer.auto.commit.interval: 100
+kafka.consumer.auto.offset.reset: earliest
+kafka.consumer.group.id: test-consumer-group
+kafka.consumer.concurrency: 10
+kafka.consumer.maxPollRecordsConfig: 100
+

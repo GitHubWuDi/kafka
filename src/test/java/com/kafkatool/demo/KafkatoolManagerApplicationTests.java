@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.google.gson.Gson;
 import com.kafkatool.demo.service.manager.KafKaManager;
 import com.kafkatool.demo.service.producer.KafKaProducerService;
-import com.kafkatool.demo.service.test.KafkaSenderService;
 
 
 @RunWith(SpringRunner.class)
@@ -124,7 +123,13 @@ public class KafkatoolManagerApplicationTests {
 	public void sendDefaultTest(){
 		String topicName = "test10";
 		String data = getTestContent();
-		kafKaProducerService.send(topicName, data);
+		List<String> list = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			list.add(data);
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		kafKaProducerService.send(topicName, json);
 	}
 	
 	/**

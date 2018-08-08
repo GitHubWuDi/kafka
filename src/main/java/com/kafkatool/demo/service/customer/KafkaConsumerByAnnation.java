@@ -1,6 +1,9 @@
 package com.kafkatool.demo.service.customer;
 
+import java.util.List;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.support.Acknowledgment;
 
 /**
 * @author wudi E-mail:wudi891012@163.com
@@ -10,10 +13,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 public interface KafkaConsumerByAnnation {
   /**
   * 通过@KafkaListener进行数据接收
-  * 配置为默认配置
+  * 配置为批量消费配置
+  * ConsumerRecord<?, ?> record
   * @param record
   * @return
   */
-  public void consumerMessageByAnnation(ConsumerRecord<?, ?> record);
-  
+  public void consumerMessageByAnnation(List<ConsumerRecord> records , Acknowledgment ack);
+ 
 }

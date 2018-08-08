@@ -43,8 +43,8 @@ public class KafkatoolApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		String topicName = "test10";
-		kafKaConsumerConfigService.executeConfigConsumer(topicName);		
+//		String topicName = "test10";
+//		kafKaConsumerConfigService.executeConfigConsumer(topicName);		
 	}
 	
 	
