@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.kafkatool.demo.enums.ResultCodeEnum;
 import com.kafkatool.demo.exception.KafKaException;
-import com.kafkatool.demo.service.KafkaConsumerByAnnation;
+import com.kafkatool.demo.service.customer.KafkaConsumerByAnnation;
 
 /**
  * 通过KafkaListener来消费信息

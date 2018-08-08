@@ -19,8 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.google.gson.Gson;
-import com.kafkatool.demo.service.KafKaManager;
-import com.kafkatool.demo.service.KafKaProducerService;
+import com.kafkatool.demo.service.manager.KafKaManager;
+import com.kafkatool.demo.service.producer.KafKaProducerService;
 import com.kafkatool.demo.service.test.KafkaSenderService;
 
 

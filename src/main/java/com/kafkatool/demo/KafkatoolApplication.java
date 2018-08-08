@@ -6,20 +6,24 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.google.gson.Gson;
-import com.kafkatool.demo.service.KafKaProducerService;
+import com.kafkatool.demo.service.producer.KafKaProducerService;
+import com.kafkatool.demo.service.test.KafKaConsumerConfigService;
 
 @EnableScheduling
 @SpringBootApplication
-public class KafkatoolApplication {
+public class KafkatoolApplication implements CommandLineRunner {
 
 	@Autowired
 	private KafKaProducerService kafKaProducerService;
+	@Autowired
+	private KafKaConsumerConfigService kafKaConsumerConfigService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(KafkatoolApplication.class, args);
@@ -36,5 +40,14 @@ public class KafkatoolApplication {
         String json = gson.toJson(map);
         kafKaProducerService.send(topic, json);
 	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		String topicName = "test10";
+		kafKaConsumerConfigService.executeConfigConsumer(topicName);		
+	}
+	
+	
+	
 	
 }

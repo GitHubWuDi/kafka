@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service.impl;
+package com.kafkatool.demo.service.producer;
 
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;

@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service;
+package com.kafkatool.demo.service.manager;
 
 import java.util.List;
 import java.util.Map;

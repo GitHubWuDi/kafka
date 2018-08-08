@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service;
+package com.kafkatool.demo.service.producer;
 
 import java.util.List;
 import java.util.Properties;

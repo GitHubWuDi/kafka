@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service.impl;
+package com.kafkatool.demo.service.producer;
 
 import java.util.List;
 import java.util.Properties;
@@ -17,8 +17,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
-
-import com.kafkatool.demo.service.KafKaProducerService;
 
 /**
 * @author wudi E-mail:wudi891012@163.com

@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service;
+package com.kafkatool.demo.service.customer;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -42,6 +42,8 @@ public abstract class KafkaConsumerServiceAbs {
 			 }
 		 }catch(Exception e){
 			 logger.error("consumer message occuries error:", e);
+		 }finally{
+			 consumer.close();
 		 }
 	 }
      

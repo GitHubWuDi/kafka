@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service;
+package com.kafkatool.demo.service.customer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 

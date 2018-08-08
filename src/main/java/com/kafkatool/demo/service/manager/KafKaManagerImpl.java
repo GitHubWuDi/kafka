@@ -1,4 +1,4 @@
-package com.kafkatool.demo.service.impl;
+package com.kafkatool.demo.service.manager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.kafkatool.demo.enums.ResultCodeEnum;
 import com.kafkatool.demo.exception.KafKaException;
-import com.kafkatool.demo.service.KafKaManager;
 
 import kafka.admin.AdminUtils;
 import kafka.admin.BrokerMetadata;
