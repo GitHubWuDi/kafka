@@ -80,7 +80,7 @@ public class KafkatoolManagerApplicationTests {
 	 */
 	@Test
 	public void modifyTopicInfo(){
-		String topicName = "test10";
+		String topicName = "test11";
 		Properties properties = new Properties();
 		properties.put("max.message.bytes", "1000000");
 		kafKaManager.modifyTopicConfig(topicName, properties);
@@ -101,7 +101,7 @@ public class KafkatoolManagerApplicationTests {
 	@Test
 	public void modifyTopicPartitionsAndReplicationTest(){
 		String topicName = "test10";
-		int partition = 2; 
+		int partition = 1; 
 		int replication = 3;
 		kafKaManager.modifyTopicPartitionsAndReplication(topicName, partition, replication);
 	}
@@ -111,7 +111,7 @@ public class KafkatoolManagerApplicationTests {
 	 */
 	@Test
 	public void deleteTopic(){
-		String topicName = "kafka-test-0";
+		String topicName = "my-stream-processing-application3-KSTREAM-JOINTHIS-0000000004-store-changelog";
 		kafKaManager.deleteTopic(topicName);
 	}
 	
