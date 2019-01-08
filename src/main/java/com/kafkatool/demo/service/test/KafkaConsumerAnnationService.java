@@ -26,7 +26,7 @@ public class KafkaConsumerAnnationService implements KafkaConsumerByAnnation {
     private int recordSize=0;
 	
 	@Override
-	@KafkaListener(topics = {"test10" }, group = "test-consumer-group", containerFactory = "kafkaListenerContainerFactory")
+	@KafkaListener(topics = {"flink-wiki-demo1" }, group = "test-consumer-group", containerFactory = "kafkaListenerContainerFactory")
 	public void consumerMessageByAnnation(List<ConsumerRecord> records, Acknowledgment ack) {
 		logger.info("record size:"+records.size());
 		try {

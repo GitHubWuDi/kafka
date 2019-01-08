@@ -29,17 +29,17 @@ public class KafkatoolApplication implements CommandLineRunner {
 		SpringApplication.run(KafkatoolApplication.class, args);
 	}
 	
-	@Scheduled(fixedRate=1000*3)
-	public void testKafka(){
-		String topic = "test10";
-		Gson gson = new Gson();
-		Map<String,Object> map = new HashMap<String,Object>();
-        map.put("id", System.currentTimeMillis());
-        map.put("msg", UUID.randomUUID().toString());
-        map.put("sendTime", new Date());
-        String json = gson.toJson(map);
-        kafKaProducerService.send(topic, json);
-	}
+//	@Scheduled(fixedRate=1000*3)
+//	public void testKafka(){
+//		String topic = "test10";
+//		Gson gson = new Gson();
+//		Map<String,Object> map = new HashMap<String,Object>();
+//        map.put("id", System.currentTimeMillis());
+//        map.put("msg", UUID.randomUUID().toString());
+//        map.put("sendTime", new Date());
+//        String json = gson.toJson(map);
+//        kafKaProducerService.send(topic, json);
+//	}
 
 	@Override
 	public void run(String... args) throws Exception {

@@ -1,20 +1,25 @@
 package com.kafkatool.demo.service.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.kafka.clients.producer.internals.Sender;
+import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.Aggregator;
+import org.apache.kafka.streams.kstream.Initializer;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
@@ -26,8 +31,11 @@ import org.apache.kafka.streams.kstream.TimeWindows;
 import org.apache.kafka.streams.kstream.ValueJoiner;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.apache.kafka.streams.kstream.Windowed;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kafkatool.demo.service.test.demo.IpBlackListProcessor;
 
 import kafka.consumer.ConsumerConfig;
@@ -37,14 +45,14 @@ public class KafkaStreamTest {
 
 	private static Logger logger = Logger.getLogger(KafkaStreamTest.class);
 	
-	private static String filePath = "D:\\tmp\\file\\kafkatest.txt";
+	private static String filePath = "d:\\tmp\\file\\kafkatest.txt";
 	
 	
 	
 	
 	public static Properties kafkaStreamConfigMap(){
 		Properties props = new Properties();
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "my-stream-processing-application3");
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "lijihong-streams");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.118.81:9092");
 //		props.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "192.168.118.81:2181");
 		props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -56,20 +64,23 @@ public class KafkaStreamTest {
 //		props.put(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, KafkaStreamsRocksDbConfigSetter.class);
 		props.put(ConsumerConfig.AutoOffsetReset(), "earliest");
 //		props.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, "2");
+		
+		logger.setLevel(Level.INFO);
 		return props;
 	}
 	
 	
 	public static void main(String[] args) {
 		Properties properties = kafkaStreamConfigMap();
-		//constructKStream(properties);
-		//kStreamJoinTest(properties);
+//		constructKStream(properties);
+//		kStreamJoinTest(properties);
 		//kTableJoinTest(properties);
 		//ktableAndkstreamTest(properties);
-		//wordcountKstream(properties);
-		//wordcountKstreamLamda(properties);
+//		wordcountKstream(properties);
+		wordcountKstreamLamda(properties);
 		//kafkastreamAggregate(properties);
-		kafkastreamDemoByIP(properties);
+		// kafkastreamDemoByIP(properties);
+//		aggregateList(properties);
 	}
 	
 	/**
@@ -82,7 +93,7 @@ public class KafkaStreamTest {
 		final Serde<String> stringSerde = Serdes.String();
 		KStreamBuilder builder = new KStreamBuilder();
 		KStream<String, String> test11Stream = builder.stream(stringSerde, stringSerde, "test12");
-		KStream<String, String> test13stream = builder.stream(stringSerde, stringSerde, "test14");
+		KStream<String, String> test13stream = builder.stream(stringSerde, stringSerde, "test50");
 		KStream<String, String> join = test11Stream.join(test13stream, new ValueJoiner<String,String, String>() {
 			@Override
 			public String apply(String test11Value1, String test13Value2) {
@@ -137,9 +148,9 @@ public class KafkaStreamTest {
 	 */
 	public  static void constructKStream(Properties properties){
 		KStreamBuilder builder = new KStreamBuilder();
-	    KStream<String, String> stream = builder.stream("kafka-stream-3");
-	    //KTable<String, String> kTable = builder.table(Serdes.String(),Serdes.String(),"kafka-stream-3", "Ktable-test1");
-	    stream.print();
+//	    KStream<String, String> stream = builder.stream("kafka-stream-3");
+	    KTable<String, String> kTable = builder.table(Serdes.String(),Serdes.String(),"kafka-stream-3", "Ktable-test1");
+	    kTable.print();
 		startKafKaStream(properties, builder);
 	}
 
@@ -151,11 +162,12 @@ public class KafkaStreamTest {
 	 */
 	public static void wordcountKstreamLamda(Properties properties){
 		KStreamBuilder builder = new KStreamBuilder();
-		KStream<String, String> stream = builder.stream("kafka-stream-3");
+		KStream<String, String> stream = builder.stream("lijihongs2");
 		KTable<String, Long> count = stream.filter((key,value) ->{if(StringUtils.isBlank(value)){return false;}return true;})
 		      .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
 		      .map((key,value)->{return new KeyValue<String,String>(value,value); })
-		      .groupByKey().count("word-count");
+		      .groupByKey()
+		      .count("word-count");
 		count.print();
 		startKafKaStream(properties, builder);
 	}
@@ -220,6 +232,93 @@ public class KafkaStreamTest {
 		 startKafKaStream(properties, builder);
 	}
 	
+	public static void aggregateList(Properties properties) {
+		KStreamBuilder builder = new KStreamBuilder();
+		KStream<String, String> kStream = builder.stream("lijihongs2");
+		KStream<String, Integer> map = kStream.map((key,value)->{
+			return new KeyValue<String,Integer>(value.split(" ")[0], Integer.valueOf(value.split(" ")[1]));
+		});
+		KGroupedStream<String, Integer> groupByKey = map.groupByKey(Serdes.String(), Serdes.Integer());
+		Aggregator<String, Integer, List<Integer>> aggregator = new Aggregator<String, Integer, List<Integer>>() {
+
+			@Override
+			public List<Integer> apply(String aggKey, Integer value, List<Integer> aggregate) {
+				aggregate.add(value);
+				return aggregate;
+			}
+		};
+		Initializer<List<Integer>> initializer = new Initializer<List<Integer>>() {
+			@Override
+			public List<Integer> apply() {
+				return new ArrayList<Integer>();
+			}
+		};
+		Serde<List<Integer>> sender = new Serde<List<Integer>>() {
+			@Override
+			public void configure(Map<String, ?> configs, boolean isKey) {
+			}
+
+			@Override
+			public void close() {
+			}
+
+			@Override
+			public Serializer<List<Integer>> serializer() {
+				return new Serializer<List<Integer>>() {
+					
+					@Override
+					public byte[] serialize(String topic, List<Integer> data) {
+						Gson gson = new Gson();
+						String json = gson.toJson(data);
+						return json.getBytes();
+					}
+					
+					@Override
+					public void configure(Map<String, ?> configs, boolean isKey) {
+					}
+					
+					@Override
+					public void close() {
+						
+					}
+				};
+			}
+
+			@Override
+			public Deserializer<List<Integer>> deserializer() {
+				return new Deserializer<List<Integer>>() {
+					
+					@Override
+					public List<Integer> deserialize(String topic, byte[] data) {
+						String string = new String(data);
+						;
+						Gson gson = new Gson();
+						List<Integer> fromJson = gson.fromJson(string, new TypeToken<List<Integer>>(){}.getType());
+						return fromJson;
+					}
+					
+					@Override
+					public void configure(Map<String, ?> configs, boolean isKey) {
+					}
+					
+					@Override
+					public void close() {
+					}
+				};
+			}
+		};
+		TimeWindows of = TimeWindows.of(30*1000L);
+		KTable<Windowed<String>, List<Integer>> aggregate = groupByKey.aggregate(initializer , aggregator ,of , sender , "aggregateList");
+		KStream<Windowed<String>, List<Integer>> filter = aggregate.toStream().filter((Windowed<String> key, List<Integer> list)->{
+			int result = 0;
+			for (Integer integer : list) {
+				result += integer;
+			}
+			return result > 10;
+		});
+		filter.writeAsText(filePath);
+		startKafKaStream(properties, builder);
+	}
 	
 	public static void kafkastreamDemoByIP(Properties properties){
 		KStreamBuilder builder = new KStreamBuilder();
