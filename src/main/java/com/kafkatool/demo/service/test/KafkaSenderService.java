@@ -20,7 +20,7 @@ public class KafkaSenderService {
 	 */
 	public void send(String topic, String data) {
 		ListenableFuture<SendResult<String,String>> listenableFuture = kafkaTemplate.send(topic, data);
-		listenableFuture.addCallback(success -> logger.info("KafkaMessageProducer 发送消息"+"topic:"+topic+"成功！"),
+		listenableFuture.addCallback(success -> {},
                 fail -> logger.error("KafkaMessageProducer 发送消息失败！"));
 	}
 	

@@ -2,6 +2,7 @@ package com.kafkatool.demo.util;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /** * 
@@ -33,6 +34,14 @@ public class DateUtil {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		Date date = timeStampTransferDate(ts);
 		System.out.println(date);
+	}
+	
+	
+	public static Date addMinutes(Date date, int n) {
+		Calendar cd = Calendar.getInstance();
+		cd.setTime(date);
+		cd.add(Calendar.MINUTE, n);// 增加分钟
+		return cd.getTime();
 	}
 	
 	
